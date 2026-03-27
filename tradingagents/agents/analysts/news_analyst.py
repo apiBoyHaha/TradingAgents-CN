@@ -413,7 +413,11 @@ def create_news_analyst(llm, toolkit):
 
                             if current_tool_name == tool_name:
                                 try:
-                                    tool_result = tool.invoke(tool_args)
+                                    # 优先使用invoke方法（LangChain BaseTool），否则直接调用函数
+                                    if hasattr(tool, 'invoke') and callable(tool.invoke):
+                                        tool_result = tool.invoke(tool_args)
+                                    else:
+                                        tool_result = tool(**tool_args)
                                     logger.info(f"[新闻分析师] ✅ 工具执行成功，结果长度: {len(str(tool_result))}")
                                     break
                                 except Exception as tool_error:
