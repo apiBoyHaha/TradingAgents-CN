@@ -407,3 +407,34 @@ def create_news_analyst(llm, toolkit):
         }
 
     return news_analyst_node
+
+
+if __name__ == "__main__":
+    from tradingagents.agents.utils.agent_utils import Toolkit
+
+    # ========== 测试配置 ==========
+    TEST_TICKER = "0700.HK"   # 可改为港股 "00700" 或美股 "AAPL"
+    END_DATE = datetime.now().strftime("%Y-%m-%d")
+
+    print("=" * 60)
+    print(f"📰 测试 get_stock_news_unified")
+    print(f"   股票代码 : {TEST_TICKER}")
+
+    print("=" * 60)
+
+    try:
+        result = Toolkit.get_stock_news_unified.invoke({
+            "ticker": TEST_TICKER,
+            "curr_date": END_DATE
+        })
+
+        print("\n✅ 工具调用成功，返回数据：")
+        print("-" * 60)
+        print(result)
+        print("-" * 60)
+        print(f"\n📏 返回数据长度：{len(str(result))} 字符")
+
+    except Exception as e:
+        print(f"\n❌ 工具调用失败：{e}")
+        import traceback
+        traceback.print_exc()

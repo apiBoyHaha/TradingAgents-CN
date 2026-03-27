@@ -505,3 +505,39 @@ def create_market_analyst(llm, toolkit):
             }
 
     return market_analyst_node
+
+
+
+
+if __name__ == "__main__":
+    from datetime import datetime, timedelta
+    from tradingagents.agents.utils.agent_utils import Toolkit
+
+    # ========== 测试配置 ==========
+    TEST_TICKER = "0700.HK"   # 可改为港股 "00700" 或美股 "AAPL"
+    END_DATE = datetime.now().strftime("%Y-%m-%d")
+    START_DATE = (datetime.now() - timedelta(days=10)).strftime("%Y-%m-%d")
+
+    print("=" * 60)
+    print(f"📊 测试 get_stock_market_data_unified")
+    print(f"   股票代码 : {TEST_TICKER}")
+    print(f"   日期范围 : {START_DATE} ~ {END_DATE}")
+    print("=" * 60)
+
+    try:
+        result = Toolkit.get_stock_market_data_unified.invoke({
+            "ticker": TEST_TICKER,
+            "start_date": START_DATE,
+            "end_date": END_DATE,
+        })
+
+        print("\n✅ 工具调用成功，返回数据：")
+        print("-" * 60)
+        print(result)
+        print("-" * 60)
+        print(f"\n📏 返回数据长度：{len(str(result))} 字符")
+
+    except Exception as e:
+        print(f"\n❌ 工具调用失败：{e}")
+        import traceback
+        traceback.print_exc()
